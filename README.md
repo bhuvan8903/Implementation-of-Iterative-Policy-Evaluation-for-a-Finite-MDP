@@ -250,7 +250,24 @@ Iterative policy evaluation was implemented successfully using the Gymnasium Fro
 
 
 ```
+for gamma = 0.84
 
+
+Name:Bhuvaneshwaran H
+Register Number:212223240018
+Number of Iterations: 32
+
+State-Value Function:
+
+[0.0024 0.0024 0.0068 0.0025 0.0041 0.     0.0207 0.     0.0131 0.0452
+ 0.0915 0.     0.     0.1104 0.3701 0.    ]
+
+State-Value Function as 4x4 Grid:
+
+[[0.0024 0.0024 0.0068 0.0025]
+ [0.0041 0.     0.0207 0.    ]
+ [0.0131 0.0452 0.0915 0.    ]
+ [0.     0.1104 0.3701 0.    ]]
 
 
 
