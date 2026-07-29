@@ -99,18 +99,111 @@ Where:
 ## Program
 
 ```python
+import gymnasium as gym
+import numpy as np
 
+# Create FrozenLake environment
+env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True)
+
+# Access the unwrapped environment to use the transition model
+env = env.unwrapped
+
+# Number of states and actions
+n_states = env.observation_space.n
+n_actions = env.action_space.n
+
+print("Number of States :", n_states)
+print("Number of Actions:", n_actions)
+
+# Parameters
+gamma = 0.99
+theta = 1e-8
+
+# Random policy: each action has equal probability
+policy = np.ones((n_states, n_actions)) / n_actions
+
+# Initialize value function
+V = np.zeros(n_states)
 
 # -------------------------------------------------
 # Policy Evaluation Function
 # -------------------------------------------------
 
+def policy_evaluation(env, policy, gamma=0.99, theta=1e-8):
+    """
+    Performs iterative policy evaluation using the
+    Bellman Expectation Equation.
 
-# -------------------------------------------------
-# Display Output
-# -------------------------------------------------
+    Parameters:
+        env    : Gymnasium FrozenLake environment
+        policy : Fixed policy
+        gamma  : Discount factor
+        theta  : Convergence threshold
 
-# Change the parameters and observe the results
+    Returns:
+        V          : State-value function
+        iteration  : Number of iterations
+    """
+
+    n_states = env.observation_space.n
+    n_actions = env.action_space.n
+
+    P = env.P
+
+    V = np.zeros(n_states)
+
+    iteration = 0
+
+    while True:
+
+        delta = 0
+
+        for state in range(n_states):
+
+            old_value = V[state]
+
+            new_value = 0
+
+            # Bellman Expectation Equation
+            for action in range(n_actions):
+
+                action_probability = policy[state][action]
+
+                for probability, next_state, reward, done in P[state][action]:
+
+                    new_value += (
+                        action_probability
+                        * probability
+                        * (reward + gamma * V[next_state])
+                    )
+
+            V[state] = new_value
+
+            delta = max(delta, abs(old_value - new_value))
+
+        iteration += 1
+
+        if delta < theta:
+            break
+
+    return V, iteration
+
+# Run policy evaluation
+
+V, iterations = policy_evaluation(env, policy, gamma, theta)
+
+print("Name:Bhuvaneshwaran H")
+print("Register Number:212223240018")
+print("Number of Iterations:", iterations)
+
+print("\nState-Value Function:\n")
+print(np.round(V, 4))
+
+print("\nState-Value Function as 4x4 Grid:\n")
+print(np.round(V.reshape((4, 4)), 4))
+
+env.close()
+
 
 ```
 
@@ -120,10 +213,25 @@ Where:
 
 ```text
 
-Number of Iterations: 
+
+Number of States : 16
+Number of Actions: 4
+
+Name:Bhuvaneshwaran H
+Register Number:212223240018
+Number of Iterations: 54
+
+State-Value Function:
+
+[0.0124 0.0104 0.0193 0.0095 0.0148 0.     0.0389 0.     0.0326 0.0843
+ 0.1378 0.     0.     0.1703 0.4336 0.    ]
 
 State-Value Function as 4x4 Grid:
 
+[[0.0124 0.0104 0.0193 0.0095]
+ [0.0148 0.     0.0389 0.    ]
+ [0.0326 0.0843 0.1378 0.    ]
+ [0.     0.1703 0.4336 0.    ]]
 
 
 ```
