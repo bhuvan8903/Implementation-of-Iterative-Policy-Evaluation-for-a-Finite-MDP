@@ -246,10 +246,6 @@ Iterative policy evaluation was implemented successfully using the Gymnasium Fro
 ## Inference
 
 ```text
-
-
-
-```
 for gamma = 0.84
 
 
@@ -268,6 +264,10 @@ State-Value Function as 4x4 Grid:
  [0.0041 0.     0.0207 0.    ]
  [0.0131 0.0452 0.0915 0.    ]
  [0.     0.1104 0.3701 0.    ]]
+
+
+```
+
 
 
 
